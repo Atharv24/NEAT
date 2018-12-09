@@ -5,7 +5,8 @@ public class GenomeUtils
 {
     private const float c1 = 1f;
     private const float c2 = 1f;
-    private const float c3 = 1f;
+    private const float c3 = 0.4f;
+    private const float compatiblityThreshold = 3f;
 
     public static float CompatiblityDistance(Genome g1, Genome g2)
     {
@@ -15,7 +16,7 @@ public class GenomeUtils
         int excessGenes = disjointExcess[1];
         float avgWeightDifference = AverageWeightDifference(g1.GetConnections(), g2.GetConnections());
 
-        distance = c1 * excessGenes + c2 * disjointGenes + avgWeightDifference;
+        distance = c1 * excessGenes + c2 * disjointGenes + c3 * avgWeightDifference;
 
         return distance;
     }
