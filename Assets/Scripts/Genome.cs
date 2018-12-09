@@ -47,6 +47,11 @@ public class Genome
         return connectionList;
     }
 
+    public int GetMaxInnovation()
+    {
+        return connectionKeys[connectionKeys.Count-1];
+    }
+
     public void AddNode(NodeGene node)                           //Adds a node in the genome
     {
         nodeList.Add(new NodeGene(node));
