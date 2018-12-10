@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
-public class Network
+public class Network : IComparable<Network>
 {
     private List<Genome.NodeGene> nodeGenes;
     private Dictionary<int, Genome.ConnectionGene> connectionGenes;
@@ -234,4 +235,8 @@ public class Network
         fitness += fit;
     }
 
+    public int CompareTo(Network other)
+    {
+        return other.GetFitness().CompareTo(fitness);
+    }
 }
