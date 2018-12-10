@@ -144,35 +144,6 @@ public class Genome
         connectionKeys.Add(innovation);
     }
 
-    public static Genome Crossover(Genome parent1, Genome parent2)      //Creates a child genome from two parent genomes. Parent 1 has higher fitness.
-    {
-        Random r = new Random();
-        Genome child = new Genome();
-
-        List<NodeGene> parent1nodes = parent1.GetNodes();
-        Dictionary<int, ConnectionGene> parent1connections = parent1.GetConnections();
-        Dictionary<int, ConnectionGene> parent2connections = parent2.GetConnections();
-
-        foreach (NodeGene p1node in parent1nodes)
-        {
-            child.AddNode(p1node);
-        }
-
-        foreach (ConnectionGene p1con in parent1connections.Values)
-        {
-            if (parent2connections.ContainsKey(p1con.GetInnovation()))
-            {
-                child.AddConnection(r.Next(100) < 50 ? p1con : parent2connections[p1con.GetInnovation()]);
-            }
-            else
-            {
-                child.AddConnection(p1con);
-            }
-        }
-
-        return child;
-    }
-
     public class NodeGene                                       //NodeGene Subclass
     {
         public enum TYPE

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 public class Network
 {
@@ -23,7 +22,6 @@ public class Network
                 connections.Add(new Connection(con.GetInNode(), con.GetOutNode(), con.GetWeight()));
             }
         }
-        
         MakeNetwork();
     }
 

@@ -3,12 +3,7 @@ using System.Collections.Generic;
 
 public class GenomeUtils
 {
-    private const float c1 = 1f;
-    private const float c2 = 1f;
-    private const float c3 = 0.4f;
-    private const float compatiblityThreshold = 3f;
-
-    public static float CompatiblityDistance(Genome g1, Genome g2)
+    public static float CompatiblityDistance(Genome g1, Genome g2, float c1, float c2, float c3)
     {
         float distance;
         int[] disjointExcess = DisjointAndExcess(g1.GetConnections(), g2.GetConnections(), g1.GetMaxInnovation(), g2.GetMaxInnovation());
@@ -71,6 +66,35 @@ public class GenomeUtils
         }
         float avgWeightDifference = weightDifference / matchingGenes;
         return avgWeightDifference;
+    }
+
+    public static Genome Crossover(Genome parent1, Genome parent2)      //Creates a child genome from two parent genomes. Parent 1 has higher fitness.
+    {
+        Random r = new Random();
+        Genome child = new Genome();
+
+        List<Genome.NodeGene> parent1nodes = parent1.GetNodes();
+        Dictionary<int, Genome.ConnectionGene> parent1connections = parent1.GetConnections();
+        Dictionary<int, Genome.ConnectionGene> parent2connections = parent2.GetConnections();
+
+        foreach (Genome.NodeGene p1node in parent1nodes)
+        {
+            child.AddNode(p1node);
+        }
+
+        foreach (Genome.ConnectionGene p1con in parent1connections.Values)
+        {
+            if (parent2connections.ContainsKey(p1con.GetInnovation()))
+            {
+                child.AddConnection(r.Next(100) < 50 ? p1con : parent2connections[p1con.GetInnovation()]);
+            }
+            else
+            {
+                child.AddConnection(p1con);
+            }
+        }
+
+        return child;
     }
 
 }
