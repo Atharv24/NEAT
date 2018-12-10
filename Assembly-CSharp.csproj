@@ -62,8 +62,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Genome.cs" />
-    <Compile Include="Assets\Scripts\InnovationGenerator.cs" />
     <Compile Include="Assets\Scripts\GenomeUtils.cs" />
+    <Compile Include="Assets\Scripts\InnovationGenerator.cs" />
+    <Compile Include="Assets\Scripts\Manager.cs" />
+    <Compile Include="Assets\Scripts\Network.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Projects/NEAT/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
