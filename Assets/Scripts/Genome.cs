@@ -63,6 +63,25 @@ public class Genome
         connectionKeys.Add(con.GetInnovation());
     }
 
+    public void Mutate(int mutatePercent, int randomChance)
+    {
+        Random r = new Random();
+        if (r.Next(100) < mutatePercent)
+        {
+            foreach(ConnectionGene con in connectionList.Values)
+            {
+                if(r.Next(100) < randomChance)
+                {
+                    con.RandomWeight();
+                }
+                else
+                {
+                    con.PerturbWeight();
+                }
+            }
+        }
+    }
+
     public void AddNodeMutation()                                   //insert a node between two connected nodes
     {
         Random r = new Random();
@@ -215,6 +234,18 @@ public class Genome
         public void Disable()       //change the active state of connection
         {
             expressed = false;
+        }
+
+        public void RandomWeight()
+        {
+            Random r = new Random();
+            weight = (float)(r.NextDouble()*2-1);
+        }
+
+        public void PerturbWeight()
+        {
+            Random r = new Random();
+            weight += (float)(r.NextDouble()-0.5);
         }
 
         public int GetInNode()
