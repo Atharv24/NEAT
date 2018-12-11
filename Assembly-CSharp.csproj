@@ -65,6 +65,7 @@
     <Compile Include="Assets\Scripts\GenomeUtils.cs" />
     <Compile Include="Assets\Scripts\InnovationGenerator.cs" />
     <Compile Include="Assets\Scripts\Manager.cs" />
+    <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\Network.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>D:/Projects/NEAT/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

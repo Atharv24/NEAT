@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Manager : MonoBehaviour
 {
+    public GameObject playerPrefab;
+    private List<GameObject> playerList;
     private List<Genome> genomes;
     private List<Network> nets;
     private Dictionary<Genome, Network> networkMap;
     private Dictionary<Genome, Species> speciesMap;
     private List<Species> speciesList;
+    private bool training;
     private int generation;
     public int population;
     public int inputNodes;
@@ -26,6 +29,7 @@ public class Manager : MonoBehaviour
 
     void Start ()
     {
+        training = false;
         generation = 1;
         genomes = new List<Genome>();
         speciesList = new List<Species>();
@@ -39,13 +43,20 @@ public class Manager : MonoBehaviour
 	
 	void Update ()
     {
-        AssignSpecies();
-        MakeNetworks();
-        //Assign nets to players
-        //Let game play
-        //check if game ended
-        SortNets();
-        NextGen();
+        if(!training)
+        {
+            AssignSpecies();
+            MakePlayers();
+            StartTraining();
+        }
+
+        if(TrainingComplete())
+        {
+            SortNets();
+            NextGen();
+            training = false;
+        }
+
     }
 
     private void AssignSpecies()
@@ -75,7 +86,7 @@ public class Manager : MonoBehaviour
         }
     }
 
-    private void MakeNetworks()
+    private void MakePlayers()
     {
         nets = new List<Network>();
         networkMap = new Dictionary<Genome, Network>();
@@ -87,7 +98,37 @@ public class Manager : MonoBehaviour
             networkMap.Add(genome, net);
         }
 
+        playerList = new List<GameObject>();
 
+        foreach (Network net in nets)
+        {
+            GameObject player = Instantiate(playerPrefab, playerPrefab.transform.position, playerPrefab.transform.rotation);
+            playerList.Add(player);
+            player.GetComponent<Movement>().SetNetwork(net);
+        }
+    }
+
+    private void StartTraining()
+    {
+        training = true;
+        foreach (GameObject player in playerList)
+        {
+            player.GetComponent<Movement>().Init();
+        }
+    }
+
+    private bool TrainingComplete()
+    {
+        bool flag = true;
+        foreach (GameObject player in playerList)
+        {
+            if(player.activeInHierarchy)
+            {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
     }
 
     private void SortNets()
