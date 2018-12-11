@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class Network : IComparable<Network>
 {
+    private Genome genome;
     private List<Genome.NodeGene> nodeGenes;
     private Dictionary<int, Genome.ConnectionGene> connectionGenes;
     private List<Node> nodes;
@@ -192,12 +193,12 @@ public class Network : IComparable<Network>
 
         List<Node> copyList = new List<Node>(hiddenNodes);
 
-        while(copyList.Count!=0)
+        while (copyList.Count != 0)
         {
             List<Node> removeNodes = new List<Node>();
             foreach (Node node in copyList)
             {
-                if(node.Ready())
+                if (node.Ready())
                 {
                     node.CalculateValue();
                     node.TransmitValue();
@@ -205,19 +206,24 @@ public class Network : IComparable<Network>
                 }
             }
 
-            foreach(Node node in removeNodes)
+            foreach (Node node in removeNodes)
             {
                 copyList.Remove(node);
             }
         }
 
-        for (int i=0; i<outputNodes.Count; i++)
+        for (int i = 0; i < outputNodes.Count; i++)
         {
             outputNodes[i].CalculateValue();
             output[i] = outputNodes[i].GetValue();
         }
 
         return output;
+    }
+
+    public Genome GetGenome()
+    {
+        return genome;
     }
 
     public float GetFitness()
