@@ -13,8 +13,9 @@ public class Network : IComparable<Network>
     private List<Connection> connections;
     private float fitness;
 	
-    public Network(Genome genome)
+    public Network(Genome gen)
     {
+        genome = gen;
         nodeGenes = genome.GetNodes();
         connectionGenes = genome.GetConnections();
         foreach(Genome.ConnectionGene con in connectionGenes.Values)
