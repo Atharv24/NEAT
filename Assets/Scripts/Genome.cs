@@ -141,15 +141,6 @@ public class Genome
         connectionKeys.Add(innovation);
     }
 
-    public void SetSpeciesCount(int count)
-    {
-        speciesCount = count;
-    }
-
-    public int GetSpeciesCount()
-    {
-        return speciesCount;
-    }
 
     public class NodeGene                                       //NodeGene Subclass
     {
