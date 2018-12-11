@@ -6,6 +6,7 @@ public class Genome
     private List<int> connectionKeys;                           //list of innovation numbers of connections
     private List<NodeGene> nodeList;                            //a list of node genes
     private Dictionary<int, ConnectionGene> connectionList;     //a map of connection genes
+    private int speciesCount;
 
     public Genome()                                             //makes an empty genome
     {
@@ -142,6 +143,16 @@ public class Genome
         int innovation = InnovationGenerator.GetInnovation();
         connectionList.Add(innovation, new ConnectionGene(node1 + 1, node2 + 1, weight, true, innovation));
         connectionKeys.Add(innovation);
+    }
+
+    public void SetSpeciesCount(int count)
+    {
+        speciesCount = count;
+    }
+
+    public int GetSpeciesCount()
+    {
+        return speciesCount;
     }
 
     public class NodeGene                                       //NodeGene Subclass
