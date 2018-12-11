@@ -64,21 +64,18 @@ public class Genome
         connectionKeys.Add(con.GetInnovation());
     }
 
-    public void Mutate(int mutatePercent, int randomChance)
+    public void Mutate(float randomChance)
     {
         Random r = new Random();
-        if (r.Next(100) < mutatePercent)
+        foreach (ConnectionGene con in connectionList.Values)
         {
-            foreach(ConnectionGene con in connectionList.Values)
+            if (r.NextDouble() < randomChance)
             {
-                if(r.Next(100) < randomChance)
-                {
-                    con.RandomWeight();
-                }
-                else
-                {
-                    con.PerturbWeight();
-                }
+                con.RandomWeight();
+            }
+            else
+            {
+                con.PerturbWeight();
             }
         }
     }
