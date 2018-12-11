@@ -17,7 +17,7 @@ public class Movement : MonoBehaviour {
         {
             transform.Translate(transform.forward * forwardSpeed * Time.deltaTime);
             transform.Rotate(transform.up * turningSpeed * Time.deltaTime * net.GetOutput(SensorInput())[0]);
-        }
+        } 
 	}
     
     private float[] SensorInput()
@@ -30,6 +30,7 @@ public class Movement : MonoBehaviour {
             if(Physics.Raycast(sensors[i].position, sensors[i].forward, out hit,sensorRange))
             {
                 distances[i] = hit.distance;
+                Debug.DrawRay(sensors[i].position, sensors[i].TransformDirection(Vector3.forward) * hit.distance, Color.red);
             }
             else
             {

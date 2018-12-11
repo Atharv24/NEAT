@@ -15,6 +15,11 @@ public class Network : IComparable<Network>
 	
     public Network(Genome gen)
     {
+        connections = new List<Connection>();
+        nodes = new List<Node>();
+        inputNodes = new List<Node>();
+        outputNodes = new List<Node>();
+        hiddenNodes = new List<Node>();
         genome = gen;
         nodeGenes = genome.GetNodes();
         connectionGenes = genome.GetConnections();
@@ -22,7 +27,8 @@ public class Network : IComparable<Network>
         {
             if(con.IsExpressed())
             {
-                connections.Add(new Connection(con.GetInNode(), con.GetOutNode(), con.GetWeight()));
+                Connection newCon = new Connection(con);
+                connections.Add(newCon);
             }
         }
         MakeNetwork();
@@ -79,7 +85,7 @@ public class Network : IComparable<Network>
 
         public void SetValue(float val)
         {
-            value = val;
+            value = (float)Math.Tanh(val);
         }
 
         public void CalculateValue()
@@ -88,6 +94,7 @@ public class Network : IComparable<Network>
             {
                 value += con.GetValue();
             }
+            value = (float)Math.Tanh(value);
         }
 
         public void TransmitValue()
@@ -115,6 +122,15 @@ public class Network : IComparable<Network>
             value = 0;
             ready = false;
             this.weight = weight;
+        }
+
+        public Connection(Genome.ConnectionGene con)
+        {
+            inNode = con.GetInNode();
+            outNode = con.GetOutNode();
+            value = 0;
+            ready = false;
+            weight = con.GetWeight();
         }
 
         public int GetInNode()
