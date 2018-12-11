@@ -13,7 +13,7 @@ public class Network : IComparable<Network>
     private List<Connection> connections;
     private float fitness;
 	
-    public Network(Genome genome, int input, int output)
+    public Network(Genome genome)
     {
         nodeGenes = genome.GetNodes();
         connectionGenes = genome.GetConnections();
