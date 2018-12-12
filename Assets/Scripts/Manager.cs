@@ -190,7 +190,7 @@ public class Manager : MonoBehaviour
 
         foreach (Species species in speciesList)
         {
-            for (int i=0; i< (int)species.GetFitness() / totalFitness * leftPopulation; i++)
+            for (int i=0; i< (int)(species.GetFitness() / totalFitness * leftPopulation); i++)
             {
                 Genome parent1 = species.GetRandomGenome(r);
                 Genome parent2 = species.GetRandomGenome(r);
@@ -232,64 +232,5 @@ public class Manager : MonoBehaviour
         }
         population = nextGenomes.Count;
         genomes = nextGenomes;
-    }
-
-    public class Species
-    {
-        private Genome mascot;
-        private List<Genome> members;
-        private float fitness;
-
-        public Species(Genome firstMember)
-        {
-            members = new List<Genome>
-            {
-                firstMember
-            };
-            mascot = firstMember;
-            fitness = 0;
-        }
-
-        public Genome GetRandomGenome(System.Random r)
-        {
-            return members[r.Next(members.Count)];
-        }
-
-        public void RandomizeMascot(System.Random r)
-        {
-            mascot = members[r.Next(members.Count)];
-        }
-
-        public void AddMember(Genome genome)
-        {
-            members.Add(genome);
-        }
-
-        public void AddFitness(float fit)
-        {
-            fitness += fit;
-        }
-
-        public float GetFitness()
-        {
-            return fitness;
-        }
-
-        public int GetCount()
-        {
-            return members.Count;
-        }
-
-        public Genome GetMascot()
-        {
-            return mascot;
-        }
-
-        public void Reset()
-        {
-            members.Clear();
-            fitness = 0;
-        }
-
     }
 }
