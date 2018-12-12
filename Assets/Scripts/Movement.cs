@@ -15,8 +15,9 @@ public class Movement : MonoBehaviour {
         if(initialized)
         {
             timeSurvived += Time.deltaTime;
-            transform.Translate(Vector3.forward * Time.deltaTime);
-            transform.Rotate(transform.up * turningSpeed * Time.deltaTime * net.GetOutput(SensorInput())[0]);
+            float[] output = net.GetOutput(SensorInput());
+            transform.Translate(Vector3.forward * forwardSpeed * output[0] * Time.deltaTime);
+            transform.Rotate(transform.up * turningSpeed * Time.deltaTime * output[1]);
         }
 	}
 
