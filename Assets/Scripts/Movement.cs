@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Movement : MonoBehaviour {
 
@@ -10,20 +8,18 @@ public class Movement : MonoBehaviour {
     public float sensorRange;
     private Network net;
     private bool initialized = false;
-    private float distanceCovered = 0f;
     private float timeSurvived = 0f;
 	
 	void Update ()
     {
         if(initialized)
         {
-            timeSurvived += Time.deltaTime;
-            transform.Translate(transform.forward * forwardSpeed * Time.deltaTime);
+            transform.Translate(Vector3.forward * Time.deltaTime);
             transform.Rotate(transform.up * turningSpeed * Time.deltaTime * net.GetOutput(SensorInput())[0]);
-        } 
+        }
 	}
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Wall")
         {
