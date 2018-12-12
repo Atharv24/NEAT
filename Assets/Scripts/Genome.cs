@@ -64,18 +64,17 @@ public class Genome
         connectionKeys.Add(con.GetInnovation());
     }
 
-    public void Mutate(float randomChance)
+    public void Mutate(float randomChance, Random r)
     {
-        Random r = new Random();
         foreach (ConnectionGene con in connectionList.Values)
         {
             if (r.NextDouble() < randomChance)
             {
-                con.RandomWeight();
+                con.RandomWeight(r);
             }
             else
             {
-                con.PerturbWeight();
+                con.PerturbWeight(r);
             }
         }
     }
@@ -203,16 +202,14 @@ public class Genome
             expressed = false;
         }
 
-        public void RandomWeight()
+        public void RandomWeight(Random r)
         {
-            Random r = new Random();
             weight = (float)(r.NextDouble()*2-1);
         }
 
-        public void PerturbWeight()
+        public void PerturbWeight(Random r)
         {
-            Random r = new Random();
-            weight += (float)(r.NextDouble()-0.5);
+            weight += (float)(r.NextDouble()-0.5)*0.5f;
         }
 
         public int GetInNode()
