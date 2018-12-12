@@ -35,6 +35,7 @@ public class Genome
                 innovation++;
             }
         }
+        InnovationGenerator.SetInnovation(connectionKeys.Count);
     }
 
     public List<NodeGene> GetNodes()
