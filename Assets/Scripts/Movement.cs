@@ -65,8 +65,11 @@ public class Movement : MonoBehaviour {
             RaycastHit hit;
             if(Physics.Raycast(sensors[i].position, sensors[i].forward, out hit, sensorRange))
             {
-                distances[i] = hit.distance;
-                Debug.DrawRay(sensors[i].position, sensors[i].TransformDirection(Vector3.forward) * hit.distance, Color.red);
+                if(hit.collider.tag=="Wall")
+                {
+                    distances[i] = hit.distance;
+                    Debug.DrawRay(sensors[i].position, sensors[i].TransformDirection(Vector3.forward) * hit.distance, Color.red);
+                }
             }
             else
             {
