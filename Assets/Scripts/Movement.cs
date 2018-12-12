@@ -14,6 +14,7 @@ public class Movement : MonoBehaviour {
     {
         if(initialized)
         {
+            timeSurvived += Time.deltaTime;
             transform.Translate(Vector3.forward * Time.deltaTime);
             transform.Rotate(transform.up * turningSpeed * Time.deltaTime * net.GetOutput(SensorInput())[0]);
         }
@@ -24,7 +25,7 @@ public class Movement : MonoBehaviour {
         if(other.tag == "Wall")
         {
             initialized = false;
-            net.SetFitness(timeSurvived);
+            net.SetFitness(timeSurvived*10);
             gameObject.SetActive(false);
         }
     }

@@ -79,9 +79,8 @@ public class Genome
         }
     }
 
-    public void AddNodeMutation()                                   //insert a node between two connected nodes
+    public void AddNodeMutation(Random r)                                   //insert a node between two connected nodes
     {
-        Random r = new Random();
         int conKey = connectionKeys[r.Next(connectionKeys.Count)];      //get a random connection
         ConnectionGene con = connectionList[conKey];
         int node1 = con.GetInNode();
@@ -102,9 +101,8 @@ public class Genome
         connectionList.Add(innovation2, new ConnectionGene(newNode.GetID(), node2, con.GetWeight(), true, innovation2));
     }
 
-    public void AddConnectionMutation()                               //Adds a connection between two random nodes
+    public void AddConnectionMutation(Random r)                               //Adds a connection between two random nodes
     {
-        Random r = new Random();
         int node1 = r.Next(nodeList.Count);
         int node2 = r.Next(nodeList.Count);
 
@@ -113,7 +111,7 @@ public class Genome
 
         if (type1 == type2 && type1 != NodeGene.TYPE.HIDDEN)                        //invalid pair
         {
-            AddConnectionMutation();                                                  //try again with a random a pair
+            AddConnectionMutation(r);                                                  //try again with a random a pair
             return;
         }
 
