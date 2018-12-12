@@ -19,6 +19,7 @@ public class Genome
         connectionKeys = new List<int>();
         nodeList = new List<NodeGene>();
         connectionList = new Dictionary<int, ConnectionGene>();
+        int innovation = 1;
         for (int i = 1; i <= inputNodes; i++)
         {
             nodeList.Add(new NodeGene(i, NodeGene.TYPE.INPUT));
@@ -29,9 +30,9 @@ public class Genome
             for (int j = 1; j <= inputNodes; j++)
             {
                 float weight = (float)((r.NextDouble() * 2) - 1);
-                int innovation = InnovationGenerator.GetInnovation();
                 connectionList.Add(innovation, new ConnectionGene(j, i, weight, true, innovation));
                 connectionKeys.Add(innovation);
+                innovation++;
             }
         }
     }
