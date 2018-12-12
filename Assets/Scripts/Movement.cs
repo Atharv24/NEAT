@@ -13,6 +13,7 @@ public class Movement : MonoBehaviour {
     public float timeSurvived = 0f;
     public float distanceCovered = 0f;
     private Rigidbody rgbd;
+    public float velocity;
 
     void Start()
     {
@@ -24,7 +25,8 @@ public class Movement : MonoBehaviour {
         if(initialized)
         {
             timeSurvived += Time.deltaTime;
-            distanceCovered += Vector3.Dot(rgbd.velocity, transform.forward) * Time.deltaTime;
+            velocity = Vector3.Dot(rgbd.velocity, transform.forward);
+            distanceCovered += velocity * Time.deltaTime;
 
             float[] output = net.GetOutput(SensorInput());
             float motor = maxMotorTorque * output[0];
@@ -58,7 +60,7 @@ public class Movement : MonoBehaviour {
 
     private float[] SensorInput()
     {
-        float[] distances = new float[sensors.Length];
+        float[] distances = new float[sensors.Length+1];
 
         for (int i=0; i<sensors.Length; i++)
         {
@@ -76,6 +78,8 @@ public class Movement : MonoBehaviour {
                 distances[i] = sensorRange;
             }
         }
+
+        distances[sensors.Length] = velocity;
 
         return distances;
     }
