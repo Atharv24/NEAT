@@ -33,9 +33,10 @@ public class Manager : MonoBehaviour
         generation = 1;
         genomes = new List<Genome>();
         speciesList = new List<Species>();
+        System.Random r = new System.Random();
         for(int i = 0; i<population; i++)
         {
-            Genome genome = new Genome(inputNodes, outputNodes);
+            Genome genome = new Genome(inputNodes, outputNodes, r);
             genomes.Add(genome);
         }
 	}
@@ -159,7 +160,9 @@ public class Manager : MonoBehaviour
             nextGenomes.Add(nets[i].GetGenome());
         }
 
-        foreach(Species species in speciesList)
+        System.Random r = new System.Random();
+
+        foreach (Species species in speciesList)
         {
             for(int i=0; i<species.GetFitness()*leftPopulation/totalFitness; i++)
             {
@@ -169,11 +172,11 @@ public class Manager : MonoBehaviour
 
                 if(networkMap[parent1].GetFitness()> networkMap[parent2].GetFitness())
                 {
-                    child = GenomeUtils.Crossover(parent1, parent2);
+                    child = GenomeUtils.Crossover(parent1, parent2, r);
                 }
                 else
                 {
-                    child = GenomeUtils.Crossover(parent2, parent1);
+                    child = GenomeUtils.Crossover(parent2, parent1, r);
                 }
                 
                 nextGenomes.Add(child);
@@ -182,7 +185,6 @@ public class Manager : MonoBehaviour
 
         foreach(Genome genome in nextGenomes)
         {
-            System.Random r = new System.Random();
             double roll = r.NextDouble();
 
             if(roll<weightMutationChance)

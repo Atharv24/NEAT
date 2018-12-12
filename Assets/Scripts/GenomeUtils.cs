@@ -68,9 +68,8 @@ public class GenomeUtils
         return avgWeightDifference;
     }
 
-    public static Genome Crossover(Genome parent1, Genome parent2)      //Creates a child genome from two parent genomes. Parent 1 has higher fitness.
+    public static Genome Crossover(Genome parent1, Genome parent2, Random r)      //Creates a child genome from two parent genomes. Parent 1 has higher fitness.
     {
-        Random r = new Random();
         Genome child = new Genome();
 
         List<Genome.NodeGene> parent1nodes = parent1.GetNodes();

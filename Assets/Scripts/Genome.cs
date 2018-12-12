@@ -14,12 +14,11 @@ public class Genome
         connectionList = new Dictionary<int, ConnectionGene>();
     }
 
-    public Genome(int inputNodes, int outputNodes)              //Makes a basic genome with only input and output nodes
+    public Genome(int inputNodes, int outputNodes, Random r)              //Makes a basic genome with only input and output nodes
     {
         connectionKeys = new List<int>();
         nodeList = new List<NodeGene>();
         connectionList = new Dictionary<int, ConnectionGene>();
-        Random r = new Random();
         for (int i = 1; i <= inputNodes; i++)
         {
             nodeList.Add(new NodeGene(i, NodeGene.TYPE.INPUT));
@@ -140,7 +139,6 @@ public class Genome
         connectionList.Add(innovation, new ConnectionGene(node1 + 1, node2 + 1, weight, true, innovation));
         connectionKeys.Add(innovation);
     }
-
 
     public class NodeGene                                       //NodeGene Subclass
     {
