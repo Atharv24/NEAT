@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
@@ -33,6 +32,7 @@ public class Manager : MonoBehaviour
         generation = 1;
         genomes = new List<Genome>();
         speciesList = new List<Species>();
+        playerList = new List<GameObject>();
         System.Random r = new System.Random();
         for(int i = 0; i<population; i++)
         {
@@ -53,6 +53,7 @@ public class Manager : MonoBehaviour
 
         if(TrainingComplete())
         {
+            DestroyPlayers();
             SortNets();
             NextGen();
             training = false;
@@ -68,7 +69,8 @@ public class Manager : MonoBehaviour
             bool found = false;
             foreach (Species species in speciesList)
             {
-                if(GenomeUtils.CompatiblityDistance(gen, species.GetMascot(), C1, C2, C3) < compatiblityThreshold)
+                float distance = GenomeUtils.CompatiblityDistance(gen, species.GetMascot(), C1, C2, C3);
+                if (distance < compatiblityThreshold)
                 {
                     species.AddMember(gen);
                     speciesMap.Add(gen, species);
@@ -83,8 +85,23 @@ public class Manager : MonoBehaviour
                 speciesList.Add(species);
                 speciesMap.Add(gen, species);
             }
-
         }
+
+        System.Random r = new System.Random();
+
+        for(int i = speciesList.Count-1; i>=0; i--)
+        {
+            if(speciesList[i].GetCount()==0)
+            {
+                speciesList.RemoveAt(i);
+            }
+            else
+            {
+                speciesList[i].RandomizeMascot(r);
+            }
+        }
+
+        Debug.Log("Gen: " + generation + ", Population: " + population + ", Species: " + speciesList.Count);
     }
 
     private void MakePlayers()
@@ -98,8 +115,6 @@ public class Manager : MonoBehaviour
             nets.Add(net);
             networkMap.Add(genome, net);
         }
-
-        playerList = new List<GameObject>();
 
         foreach (Network net in nets)
         {
@@ -132,6 +147,15 @@ public class Manager : MonoBehaviour
         return flag;
     }
 
+    private void DestroyPlayers()
+    {
+        foreach(GameObject player in playerList)
+        {
+            Destroy(player);
+        }
+        playerList.Clear();
+    }
+
     private void SortNets()
     {
         foreach (Network net in nets)
@@ -141,6 +165,8 @@ public class Manager : MonoBehaviour
         }
 
         nets.Sort();
+
+        Debug.Log("Highest Fitness: " + nets[0].GetFitness() + ", Lowest Fitness: " + nets[population-1].GetFitness());
     }
 
     private void NextGen()
@@ -155,7 +181,7 @@ public class Manager : MonoBehaviour
             totalFitness += species.GetFitness();
         }
 
-        for(int i=0; i<population*survivalChance; i++)
+        for (int i=0; i<(int)(population*survivalChance); i++)
         {
             nextGenomes.Add(nets[i].GetGenome());
         }
@@ -164,10 +190,10 @@ public class Manager : MonoBehaviour
 
         foreach (Species species in speciesList)
         {
-            for(int i=0; i<species.GetFitness()*leftPopulation/totalFitness; i++)
+            for (int i=0; i< (int)species.GetFitness() / totalFitness * leftPopulation; i++)
             {
-                Genome parent1 = species.GetRandomGenome();
-                Genome parent2 = species.GetRandomGenome();
+                Genome parent1 = species.GetRandomGenome(r);
+                Genome parent2 = species.GetRandomGenome(r);
                 Genome child = new Genome();
 
                 if(networkMap[parent1].GetFitness()> networkMap[parent2].GetFitness())
@@ -178,34 +204,33 @@ public class Manager : MonoBehaviour
                 {
                     child = GenomeUtils.Crossover(parent2, parent1, r);
                 }
-                
                 nextGenomes.Add(child);
             }
         }
 
-        foreach(Genome genome in nextGenomes)
+        foreach (Genome genome in nextGenomes)
         {
             double roll = r.NextDouble();
 
-            if(roll<weightMutationChance)
+            if (roll < weightMutationChance)
             {
-                genome.Mutate(randomWeightChance);
+                genome.Mutate(randomWeightChance, r);
             }
-            else if(roll<weightMutationChance + addNodeChance)
+            else if (roll < weightMutationChance + addNodeChance)
             {
-                genome.AddNodeMutation();
+                genome.AddNodeMutation(r);
             }
-            else if(roll< weightMutationChance + addNodeChance + addConnectionChance)
+            else if (roll < weightMutationChance + addNodeChance + addConnectionChance)
             {
-                genome.AddConnectionMutation();
+                genome.AddConnectionMutation(r);
             }
         }
 
-        foreach(Species species in speciesList)
+        foreach (Species species in speciesList)
         {
             species.Reset();
         }
-
+        population = nextGenomes.Count;
         genomes = nextGenomes;
     }
 
@@ -225,10 +250,14 @@ public class Manager : MonoBehaviour
             fitness = 0;
         }
 
-        public Genome GetRandomGenome()
+        public Genome GetRandomGenome(System.Random r)
         {
-            System.Random r = new System.Random();
             return members[r.Next(members.Count)];
+        }
+
+        public void RandomizeMascot(System.Random r)
+        {
+            mascot = members[r.Next(members.Count)];
         }
 
         public void AddMember(Genome genome)
