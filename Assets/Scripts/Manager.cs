@@ -15,15 +15,15 @@ public class Manager : MonoBehaviour
     public int population;
     public int inputNodes;
     public int outputNodes;
-    public const float C1 = 1f;
-    public const float C2 = 1f;
-    public const float C3 = 0.3f;
-    public const float compatiblityThreshold = 3f;
-    public const float survivalChance = 0.1f;
-    public const float weightMutationChance = 0.8f;
-    public const float randomWeightChance = 0.1f;
-    public const float addNodeChance = 0.03f;
-    public const float addConnectionChance = 0.05f;
+    public float C1 = 1f;
+    public float C2 = 1f;
+    public float C3 = 0.3f;
+    public float compatiblityThreshold = 3f;
+    public float survivalChance = 0.1f;
+    public float weightMutationChance = 0.8f;
+    public float randomWeightChance = 0.1f;
+    public float addNodeChance = 0.03f;
+    public float addConnectionChance = 0.05f;
 
 
     void Start ()
