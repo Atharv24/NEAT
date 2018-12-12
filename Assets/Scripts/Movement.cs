@@ -10,16 +10,29 @@ public class Movement : MonoBehaviour {
     public float sensorRange;
     private Network net;
     private bool initialized = false;
+    private float distanceCovered = 0f;
+    private float timeSurvived = 0f;
 	
 	void Update ()
     {
         if(initialized)
         {
+            timeSurvived += Time.deltaTime;
             transform.Translate(transform.forward * forwardSpeed * Time.deltaTime);
             transform.Rotate(transform.up * turningSpeed * Time.deltaTime * net.GetOutput(SensorInput())[0]);
         } 
 	}
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Wall")
+        {
+            initialized = false;
+            net.SetFitness(timeSurvived);
+            gameObject.SetActive(false);
+        }
+    }
+
     private float[] SensorInput()
     {
         float[] distances = new float[sensors.Length];
