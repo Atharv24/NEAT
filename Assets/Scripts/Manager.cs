@@ -165,8 +165,7 @@ public class Manager : MonoBehaviour
         }
 
         nets.Sort();
-
-        Debug.Log("Highest Fitness: " + nets[0].GetFitness() + ", Lowest Fitness: " + nets[population-1].GetFitness());
+        speciesList.Sort();
     }
 
     private void NextGen()
@@ -208,6 +207,25 @@ public class Manager : MonoBehaviour
             }
         }
 
+        while(nextGenomes.Count<population)
+        {
+            Genome parent1 = speciesList[0].GetRandomGenome(r);
+            Genome parent2 = speciesList[0].GetRandomGenome(r);
+            Genome child = new Genome();
+
+            if (networkMap[parent1].GetFitness() > networkMap[parent2].GetFitness())
+            {
+                child = GenomeUtils.Crossover(parent1, parent2, r);
+            }
+
+            else
+            {
+                child = GenomeUtils.Crossover(parent2, parent1, r);
+            }
+
+            nextGenomes.Add(child);
+        }
+
         foreach (Genome genome in nextGenomes)
         {
             double roll = r.NextDouble();
@@ -230,7 +248,6 @@ public class Manager : MonoBehaviour
         {
             species.Reset();
         }
-        population = nextGenomes.Count;
         genomes = nextGenomes;
     }
 }
