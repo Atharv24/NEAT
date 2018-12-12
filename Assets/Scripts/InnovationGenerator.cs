@@ -6,4 +6,11 @@
         innovation++;
         return innovation;
     }
+    public static void SetInnovation(int inno)
+    {
+        if(inno>innovation)
+        {
+            innovation = inno;
+        }
+    }
 }
