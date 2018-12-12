@@ -51,7 +51,7 @@ public class Manager : MonoBehaviour
             StartTraining();
         }
 
-        if(TrainingComplete())
+        if(TrainingComplete() || Input.GetButtonDown("Jump"))
         {
             DestroyPlayers();
             SortNets();
