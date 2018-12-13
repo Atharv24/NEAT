@@ -13,6 +13,7 @@ public class Movement : MonoBehaviour {
     public float timeSurvived = 0f;
     public float distanceCovered = 0f;
     private Rigidbody rgbd;
+    public float avgVelocity;
     public float velocity;
 
     void Start()
@@ -27,6 +28,8 @@ public class Movement : MonoBehaviour {
             timeSurvived += Time.deltaTime;
             velocity = Vector3.Dot(rgbd.velocity, transform.forward);
             distanceCovered += velocity * Time.deltaTime;
+            avgVelocity = Mathf.Abs(distanceCovered / timeSurvived);
+            
 
             float[] output = net.GetOutput(SensorInput());
             float motor = maxMotorTorque * output[0];
@@ -53,7 +56,7 @@ public class Movement : MonoBehaviour {
         if(other.tag == "Wall")
         {
             initialized = false;
-            net.SetFitness(distanceCovered * distanceCovered / timeSurvived);
+            net.SetFitness(distanceCovered * avgVelocity);
             gameObject.SetActive(false);
         }
     }
