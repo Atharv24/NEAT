@@ -6,31 +6,22 @@ public class Network : IComparable<Network>
     private Genome genome;
     private List<Genome.NodeGene> nodeGenes;
     private Dictionary<int, Genome.ConnectionGene> connectionGenes;
-    private List<Node> nodes;
+    private Dictionary<int, Node> nodes;
     private List<Node> inputNodes;
     private List<Node> outputNodes;
     private List<Node> hiddenNodes;
-    private List<Connection> connections;
     private float fitness;
 	
     public Network(Genome gen)
     {
-        connections = new List<Connection>();
-        nodes = new List<Node>();
+        nodes = new Dictionary<int, Node>();
         inputNodes = new List<Node>();
         outputNodes = new List<Node>();
         hiddenNodes = new List<Node>();
         genome = gen;
         nodeGenes = genome.GetNodes();
         connectionGenes = genome.GetConnections();
-        foreach(Genome.ConnectionGene con in connectionGenes.Values)
-        {
-            if(con.IsExpressed())
-            {
-                Connection newCon = new Connection(con);
-                connections.Add(newCon);
-            }
-        }
+
         MakeNetwork();
     }
 
@@ -181,20 +172,16 @@ public class Network : IComparable<Network>
             {
                 hiddenNodes.Add(node);
             }
+            nodes.Add(nodeGene.GetID(), node);
         }
 
-        foreach (Node node in nodes)
+        foreach(Genome.ConnectionGene conGene in connectionGenes.Values)
         {
-            foreach(Connection con in connections)
+            if (conGene.IsExpressed())
             {
-                if(con.GetInNode() == node.GetID())
-                {
-                    node.AddOutConnection(con);
-                }
-                else if(con.GetOutNode() == node.GetID())
-                {
-                    node.AddInConnection(con);
-                }
+                Connection con = new Connection(conGene);
+                nodes[con.GetInNode()].AddOutConnection(con);
+                nodes[con.GetOutNode()].AddInConnection(con);
             }
         }
     }
